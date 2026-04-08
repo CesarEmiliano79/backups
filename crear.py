@@ -43,6 +43,13 @@ def hash_archivo(ruta):
 
     return hasher.hexdigest()  # Devuelve el hash final
 
+def limpiar_nombre(nombre):
+    # Elimina caracteres problemáticos en Windows
+    caracteres_invalidos = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    for c in caracteres_invalidos:
+        nombre = nombre.replace(c, "")
+    return nombre.strip()
+
 def archivo_permitido(nombre):
     # Verifica si el archivo termina con alguna extensión permitida
     return any(nombre.endswith(ext) for ext in EXT_PERMITIDAS)
@@ -70,7 +77,7 @@ def limpiar_versiones(ruta_destino):
         print(f"Version eliminada: {vieja}")
 
 def copiar_archivo(origen, destino_base):
-    nombre = os.path.basename(origen)  # Obtiene el nombre del archivo
+    nombre = limpiar_nombre(os.path.basename(origen))  # Obtiene el nombre del archivo
 
     # Si el archivo no está permitido, se ignora
     if not archivo_permitido(nombre):
@@ -80,23 +87,31 @@ def copiar_archivo(origen, destino_base):
 
     hash_origen = hash_archivo(origen)  # Calcula hash del archivo original
 
-    # Si la carpeta destino no existe, la crea
-    if not os.path.exists(destino_base):
-        os.makedirs(destino_base)
+    if os.path.exists(destino_base):
+        if os.path.isfile(destino_base):
+            log(f"Conflicto: archivo donde debería ser carpeta -> {destino_base}")
+            print(f"Conflicto: archivo donde debería ser carpeta -> {destino_base}")
 
-    versiones = obtener_versiones(destino_base)  # Obtiene versiones existentes
-
-    # Revisa si el archivo ya existe sin cambios en alguna versión
-    for version in versiones:
-        ruta_version = os.path.join(destino_base, version, nombre)
-
-        if os.path.exists(ruta_version):
-            # Si el hash es igual, no se guarda de nuevo
-            if hash_archivo(ruta_version) == hash_origen:
-                log(f"Sin cambios: {nombre}")
-                print(f"Sin cambios: {nombre}")
+            try:
+                os.remove(destino_base)
+                log(f"Archivo conflictivo eliminado: {destino_base}")
+            except Exception as e:
+                log(f"No se pudo eliminar archivo conflictivo: {str(e)}")
                 return
 
+    # Crear carpeta segura
+    os.makedirs(destino_base, exist_ok=True)
+
+    destino_base = os.path.normpath(destino_base)
+    nombre = limpiar_nombre(nombre)
+
+    destino_final = os.path.join(destino_base, nombre)
+
+    if os.path.exists(destino_final):
+        if hash_archivo(destino_final) == hash_origen:
+            log(f"Sin cambios: {nombre}")
+            print(f"Sin cambios: {nombre}")
+            return
     # Crear nueva versión con timestamp
    # version_actual = datetime.now().strftime("%Y%m%d_%H%M%S")
   #  ruta_version = os.path.join(destino_base, version_actual)
@@ -111,19 +126,26 @@ def copiar_archivo(origen, destino_base):
 
     limpiar_versiones(destino_base)  # Limpia versiones antiguas
 
+def construir_ruta_destino(root, ruta_base):
+    relativa = os.path.relpath(root, ruta_base)
+
+    if relativa == ".":
+        destino = RUTA_DESTINO
+    else:
+        destino = os.path.join(RUTA_DESTINO, relativa)
+
+    return os.path.normpath(destino)
+
+
 def ejecutar_backup():
     # Recorre todas las rutas de origen configuradas
     for ruta in RUTAS_ORIGEN:
         # Recorre carpetas y subcarpetas
         for root, dirs, files in os.walk(ruta):
+            destino_base = construir_ruta_destino(root, ruta)
+
             for file in files:
                 origen = os.path.join(root, file)  # Ruta completa del archivo
-
-                # Calcula la ruta relativa (para mantener estructura)
-                relativa = os.path.relpath(root, ruta)
-
-                # Construye ruta destino manteniendo estructura
-                destino_base = os.path.join(RUTA_DESTINO, relativa)
 
                 try:
                     copiar_archivo(origen, destino_base)  # Procesa archivo

@@ -8,7 +8,7 @@ import json                # Leer archivo de configuración
 from datetime import datetime  # Obtener fecha y hora actual
 
 # ================= CONFIG =================
-CONFIG_FILE = "/config.json"  # Nombre del archivo de configuración
+CONFIG_FILE = "./config.json"  # Nombre del archivo de configuración
 
 def cargar_config():
     # Abre el archivo config.json en modo lectura
