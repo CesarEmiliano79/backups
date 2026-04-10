@@ -4,7 +4,7 @@ import hashlib
 import json
 from datetime import datetime
 
-# ================= CONFIG =================
+# ================= CONFIG ==================
 CONFIG_FILE = "./config.json"
 
 def cargar_config():
