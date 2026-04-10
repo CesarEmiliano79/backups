@@ -1,13 +1,13 @@
 {
   "rutas_origen": [
-    "/content/drive/MyDrive"
+    "----------"  
   ],
   "ruta_origen_carga": [
-    "/content/usuario1"
+    "-----------"
   ],
-  "ruta_destino": "/content/usuario1",
-  "ruta_destino_carga": "/content/drive/MyDrive",
-  "extensiones_permitidas": [".docx", ".xlsx", ".pdf", ".txt", ".csv", ".ipynb", ".jpeg", ".html"],
-  "max_versiones": 5,
+  "ruta_destino": "------------",
+  "ruta_destino_carga": "-----------",
+  "extensiones_permitidas": [--------------],
+  "max_versiones": -,
   "log_file": "backup_log.txt"
 }
