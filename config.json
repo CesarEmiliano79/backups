@@ -1,13 +1,11 @@
 {
+  "usuario": "%USERNAME%",
   "rutas_origen": [
-    "----------"  
+    "%USERPROFILE%\\Desktop",
+    "%USERPROFILE%\\OneDrive"
   ],
-  "ruta_origen_carga": [
-    "-----------"
-  ],
-  "ruta_destino": "------------",
-  "ruta_destino_carga": "-----------",
-  "extensiones_permitidas": [--------------],
-  "max_versiones": -,
+  "ruta_destino": "-----------------------------",
+  "extensiones_permitidas": [".docx", ".xlsx", ".pdf", ".txt", ".csv", ".ipynb", ".html", ".gdoc"],
+  "max_versiones": 2,
   "log_file": "backup_log.txt"
 }
