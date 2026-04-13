@@ -1,13 +1,18 @@
 # ========== CREACION DEL RESPALDO =========
 import os
+import sys
 import shutil
 import hashlib
 import json
 from datetime import datetime
 
 # ================= CONFIG =================
-# El config.json se lee desde la misma carpeta que el .exe o el script
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Obtiene la carpeta donde esta el .exe (funciona con PyInstaller)
+if getattr(sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
  
 def expandir(valor):
