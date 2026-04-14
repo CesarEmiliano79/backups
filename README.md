@@ -3,7 +3,7 @@
 ## Índice
 * [Descripción del proyecto](#descripción-del-proyecto)
 * [Estado del proyecto](#Estado-del-proyecto)
-* [Características de la aplicación y demostración](#Características-de-la-aplicación-y-demostración)
+* [Funcionamiento](#Funcionamiento)
 * [Acceso al proyecto](#acceso-proyecto)
 * [Tecnologías utilizadas](#tecnologías-utilizadas)
 * [Personas Contribuyentes](#personas-contribuyentes)
@@ -31,3 +31,27 @@ Version 1.0
 * Configuracion de parametros por medio del archivo config.json
 * Codigo para la creacion y restauracion de respaldos
 * Ejecucion por medio de consola con los comandos backup.exe (crea el respaldo) y backup.exe restaurar (restaurar el respaldo)
+
+<a name="Funcionamiento"></a>
+## Funcionamiento
+
+El programa sigue el siguiente flujo
+
+1.- Se ingresan las carpetas
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
